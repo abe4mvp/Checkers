@@ -13,16 +13,12 @@ class Piece #red on bottom, black moves first
     jump_moves.empty? ? slide_moves : jump_moves
   end
 
-  def jump_moves
-    jumps = []
-    my_deltas.each do |delta|
+  def jump_moves   #also make sure jumping enemy
+    my_deltas.map do |delta|
       slide = pos.add_delta(delta)
-      next unless board.valid_pos?(slide)
-      jump = slide.add_delta(delta)
-      jumps << jump if board.valid_pos?(jump) #also make sure jumping enemy
-    end
-
-    jumps
+      next unless board.in_bounds?(slide) && enemy?(slide)
+      slide.add_delta(delta)
+    end.compact.keep_if { |jump| board.valid_pos?(jump) }
   end
 
   def slide_moves
@@ -32,15 +28,14 @@ class Piece #red on bottom, black moves first
   end
 
   def enemy?(pos)#move to board?
-    raise "Empty spot" if board.empty?([pos])
-
-    board[[pos]].color != color
+    return false if board.empty?(pos)
+    board[pos].color != color
   end
 
 
 
   def my_deltas
-    return (UPDELTAS + DOWNDELTA) if king
+    return (UPDELTAS + DOWNDELTAS) if king
     color == :r ? UPDELTAS : DOWNDELTAS
   end
 

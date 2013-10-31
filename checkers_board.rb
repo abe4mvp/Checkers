@@ -32,9 +32,7 @@ class CheckersBoard
     board[row][col] = value
   end
 
-  def must_jump?(color)
-    ####
-  end
+
 
   def setup
     odds = true
