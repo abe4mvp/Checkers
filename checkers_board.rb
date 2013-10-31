@@ -32,7 +32,16 @@ class CheckersBoard
     board[row][col] = value
   end
 
-
+  def move!(start_pos,end_pos)
+    raise "Nobody home!" if empty?(start_pos)
+    piece = board[start_pos]
+    if piece.possible_moves.include?(end_pos)
+      piece.pos = end_pos
+      board[start_pos] = nil
+    else
+      raise "Illegal Move!"
+    end
+  end
 
   def setup
     odds = true
@@ -42,7 +51,6 @@ class CheckersBoard
       color = :r if row > 2
       8.times do |col|
         next if (col.even? && odds) || (col.odd? && !odds)
-
         self[[row,col]] = Piece.new(color,self,[row,col])
       end
       odds = odds ? false : true

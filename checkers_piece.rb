@@ -13,7 +13,7 @@ class Piece #red on bottom, black moves first
     jump_moves.empty? ? slide_moves : jump_moves
   end
 
-  def jump_moves   #also make sure jumping enemy
+  def jump_moves
     my_deltas.map do |delta|
       slide = pos.add_delta(delta)
       next unless board.in_bounds?(slide) && enemy?(slide)
