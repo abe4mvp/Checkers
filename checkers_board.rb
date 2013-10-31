@@ -34,10 +34,11 @@ class CheckersBoard
 
   def move!(start_pos,end_pos)
     raise "Nobody home!" if empty?(start_pos)
-    piece = board[start_pos]
+    piece = self[start_pos]
     if piece.possible_moves.include?(end_pos)
       piece.pos = end_pos
-      board[start_pos] = nil
+      self[end_pos] = piece
+      self[start_pos] = nil
     else
       raise "Illegal Move!"
     end
