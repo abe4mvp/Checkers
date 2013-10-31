@@ -1,4 +1,5 @@
 require "./checkers_piece"
+require "debugger"
 
 class CheckersBoard
   attr_accessor :board
@@ -10,25 +11,12 @@ class CheckersBoard
   def setup
     odds = true
     color = :b
-    [0,1,2,5,6,7].each_with_index do |row,index|
+
+    [0,1,2,5,6,7].each do |row|
       color = :r if row > 2
       8.times do |col|
-        next if col.even? && !odds
-        board[row,col] = Piece.new(:b,self,[row,col])
-      end
-      odds = odds ? false : true
-    end
-  nil
-  end
-
-  def setup
-    odds = true
-    color = :b
-    [0,1,2,5,6,7].each_with_index do |row, index|
-      color = :r if index > 2
-       do |col|
-        next if col.even? && !odds
-        board[row,col] = Piece.new(:b,self,[row,col])
+        next if (col.even? && odds)
+        self[[row,col]] = Piece.new(:b,self,[row,col])
       end
       odds = odds ? false : true
     end
@@ -68,13 +56,14 @@ class CheckersBoard
     puts "\n\n\n\n\n\n"
     puts "\t-- 0 - 1 - 2 - 3 - 4 - 5 - 6 - 7 --"
     puts "\t-----------------------------------"
-    board.each_with_index do |row, index|
+    self.board.each_with_index do |row, index|
       out = "\t#{index}|"
-      row.each do |item|
-        if item.nil?
+
+      row.each do |piece|
+        if piece.nil?
           out += "   |"
         else
-          out += item.render "|"
+          out += piece.render + "|"
         end
       end
       puts out

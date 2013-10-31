@@ -10,7 +10,7 @@ class Piece #red on bottom, black moves first
   end
 
   def possible_moves
-    jump_moves + slide_moves
+    jump_moves.empty? ? slide_moves : jump_moves
   end
 
   def jump_moves
@@ -46,7 +46,7 @@ class Piece #red on bottom, black moves first
 
   def render
     player = color == :r ? "red" : "bla"
-    player.upcase if king
+    king ? player.upcase : player
   end
 
 end
