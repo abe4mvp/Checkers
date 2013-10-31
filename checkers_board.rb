@@ -44,6 +44,36 @@ class CheckersBoard
     end
   end
 
+  def valid_sequence?(move_sequence)
+    test_board = Marshal.load(Marshal.dump(self))
+    begin
+      move_sequence!(test_board, move_sequence)
+    rescue
+      return false
+    end
+    true
+  end
+
+  def move_sequence!(board,sequence)# only called for multijump moves
+    start_pos = sequence.shift
+    until sequence.empty?
+      piece = self[start_pos]
+      end_pos = sequence.shift
+
+      if piece.jump_moves.include?(start_pos)
+        board.move!(start_pos,end_pos)
+      else
+        raise "Broken Sequence!"
+      end
+
+      start_pos = end_pos
+    end
+
+    raise "Invalid Sequence" unless piece.jump_moves.empty?
+    nil
+  end
+
+
   def setup
     odds = true
     color = :b
@@ -60,7 +90,7 @@ class CheckersBoard
   end
 
   def render
-    system("clear")
+    #system("clear")
     puts "\n\n\n\n\n\n"
     puts "\t-- 0 - 1 - 2 - 3 - 4 - 5 - 6 - 7 --"
     puts "\t-----------------------------------"
