@@ -4,15 +4,21 @@ class CheckersGame
 
   def initialize
     @board = CheckersBoard.new
+    player_turn = :b
   end
 
   def play
-    board.setup
-    board.render
+    #until game over
+      board.setup
+      board.render
+      #board.move(color)
+      player_turn = player_turn = :b ? :r : :b
+    #end
   end
 
 end
 
-if $PROGRAM_NAME == __FILE__
-  CheckersGame.new.play
+if $PROGRAM_NAME != __FILE__
+  $g = CheckersGame.new
+  $g.play
 end

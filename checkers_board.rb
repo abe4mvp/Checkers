@@ -9,15 +9,15 @@ class CheckersBoard
   end
 
   def empty?(pos)
-    unless in_bounds?(pos)
-      raise "out of bounds"
-      return false
-    end
     self[pos].nil?
   end
 
   def in_bounds?(pos)
     pos.all? { |coord| coord.between?(0,7)}
+  end
+
+  def valid_pos?(pos)
+    in_bounds?(pos) && empty?(pos)
   end
 
   def [](pos)
@@ -73,4 +73,5 @@ class CheckersBoard
     nil
   end
 end
+
 

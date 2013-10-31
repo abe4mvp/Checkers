@@ -17,9 +17,9 @@ class Piece #red on bottom, black moves first
     jumps = []
     my_deltas.each do |delta|
       slide = pos.add_delta(delta)
-      next if board.empty?([slide])
+      next unless board.valid_pos?(slide)
       jump = slide.add_delta(delta)
-      jumps << jump unless board.empty?([jump])
+      jumps << jump if board.valid_pos?(jump) #also make sure jumping enemy
     end
 
     jumps
@@ -28,7 +28,7 @@ class Piece #red on bottom, black moves first
   def slide_moves
     my_deltas.map do |delta|
       pos.add_delta(delta)
-    end.keep_if { |pos| board.empty?([pos]) }
+    end.keep_if { |pos| board.valid_pos?(pos) }
   end
 
   def enemy?(pos)#move to board?
