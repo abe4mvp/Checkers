@@ -42,6 +42,26 @@ class CheckersBoard
     else
       raise "Illegal Move!"
     end
+
+    delete_if_jumped(start_pos,end_pos)
+
+  end
+
+  def delete_if_jumped(start_pos,end_pos)
+    if jump_made?(start_pos, end_pos)
+      delete_point = start_pos.add_delta(mid_point(start_pos, end_pos))
+      self[delete_point] = nil
+    end
+  end
+
+  def jump_made?(start_pos, end_pos)
+    delta = start_pos.add_delta(end_pos) { |x,y| x - y }
+    delta.all? { |change| change.abs == 2}
+  end
+
+  def mid_point(start_pos, end_pos)
+    delta = start_pos.add_delta(end_pos) { |x,y| x - y }
+    delta.map { |coord| coord/(coord.abs)}
   end
 
   def valid_sequence?(move_sequence)
@@ -60,7 +80,7 @@ class CheckersBoard
       piece = self[start_pos]
       end_pos = sequence.shift
 
-      if piece.jump_moves.include?(start_pos)
+      if piece.jump_moves.include?(end_pos)
         board.move!(start_pos,end_pos)
       else
         raise "Broken Sequence!"

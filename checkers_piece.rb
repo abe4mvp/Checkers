@@ -49,12 +49,12 @@ end
 
 
 class Array
-  def add_delta!(delta)
-    self.each_with_index { |item,index| self[index] += delta[index]}
+  def add_delta(delta, &prc)
+    self.dup.add_delta!(delta, &prc)
   end
 
-  def add_delta(delta)
-    self.dup.add_delta!(delta)
+  def add_delta!(delta, &prc)
+    prc = Proc.new{ |x,y| x + y } unless prc
+    self.each_with_index { |item,index| self[index] = prc.call(item,delta[index]) }
   end
-
 end
