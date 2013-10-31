@@ -8,21 +8,6 @@ class CheckersBoard
     @board =  Array.new(8) { |row| Array.new(8) {nil} }
   end
 
-  def setup
-    odds = true
-    color = :b
-
-    [0,1,2,5,6,7].each do |row|
-      color = :r if row > 2
-      8.times do |col|
-        next if (col.even? && odds)
-        self[[row,col]] = Piece.new(:b,self,[row,col])
-      end
-      odds = odds ? false : true
-    end
-  nil
-  end
-
   def empty?(pos)
     unless in_bounds?(pos)
       raise "out of bounds"
@@ -51,6 +36,22 @@ class CheckersBoard
     ####
   end
 
+  def setup
+    odds = true
+    color = :b
+
+    [0,1,2,5,6,7].each do |row|
+      color = :r if row > 2
+      8.times do |col|
+        next if (col.even? && odds) || (col.odd? && !odds)
+
+        self[[row,col]] = Piece.new(color,self,[row,col])
+      end
+      odds = odds ? false : true
+    end
+  nil
+  end
+
   def render
     system("clear")
     puts "\n\n\n\n\n\n"
@@ -58,7 +59,6 @@ class CheckersBoard
     puts "\t-----------------------------------"
     self.board.each_with_index do |row, index|
       out = "\t#{index}|"
-
       row.each do |piece|
         if piece.nil?
           out += "   |"
