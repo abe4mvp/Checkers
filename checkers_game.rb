@@ -7,6 +7,8 @@ class CheckersGame
     player_turn = :b
   end
 
+# REV: No check for game over or UI?
+# REV: You would probably implement a rescue here to catch raised InvalidMoveErrors in this play loop to give the user another opportunity to put in a valid move
   def play
     #until game over
       board.setup

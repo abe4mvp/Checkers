@@ -39,6 +39,7 @@ class Piece #red on bottom, black moves first
     color == :r ? UPDELTAS : DOWNDELTAS
   end
 
+# REV: This entire file was super clean (awesome job!), and I'm fighting to find any place to make comments. Only suggestion I have is to make the board more presentable by using Unicode and possibly colorize.
   def render
     player = color == :r ? "red" : "bla"
     king ? player.upcase : player
@@ -53,6 +54,7 @@ class Array
     self.dup.add_delta!(delta, &prc)
   end
 
+# REV: was this ever used?
   def add_delta!(delta, &prc)
     prc = Proc.new{ |x,y| x + y } unless prc
     self.each_with_index { |item,index| self[index] = prc.call(item,delta[index]) }

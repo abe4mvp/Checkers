@@ -33,6 +33,7 @@ class CheckersBoard
   end
 
   def move!(start_pos,end_pos)
+    # REV: Might want to create an Exception class to group these Invalid Move Errors. Then you can rescue them in the play loop of the game
     raise "Nobody home!" if empty?(start_pos)
     piece = self[start_pos]
     if piece.possible_moves.include?(end_pos)
@@ -44,7 +45,7 @@ class CheckersBoard
     end
 
     delete_if_jumped(start_pos,end_pos)
-
+    # REV: Did not see any king promotion language.  This may be a place to put it (or possibly re-evaluate at the end of the game play loop)
   end
 
   def delete_if_jumped(start_pos,end_pos)
